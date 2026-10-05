@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Digital Library Management</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f1f3fa;
+    color: #222;
+}
+
+/* NAVBAR */
+nav {
+    background: #202b50;
+    color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+nav h2 {
+    color: #ffd166;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+}
+
+nav a:hover {
+    color: #ffd166;
+}
+
+/* HOME */
+.home {
+    background:
+    linear-gradient(rgba(20,30,70,.7),rgba(20,30,70,.7)),
+    url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1600");
+    background-size: cover;
+    background-position: center;
+    min-height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 30px;
+}
+
+.home h1 {
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.home p {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+/* BUTTON */
+.btn {
+    background: #6957d9;
+    color: white;
+    padding: 12px 22px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn:hover {
+    background: #202b50;
+    transform: translateY(-3px);
+}
+
+/* SECTION */
+section {
+    padding: 45px 7%;
+}
+
+.heading {
+    text-align: center;
+    color: #202b50;
+    margin-bottom: 30px;
+    font-size: 30px;
+}
+
+/* BOOK CARDS */
+.books {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px #0002;
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card h3 {
+    padding: 12px;
+    color: #202b50;
+}
+
+.card p {
+    padding: 0 12px 12px;
+    color: #666;
+}
+
+/* FORM */
+.form-box {
+    background: white;
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #0002;
+}
+
+.form-box h3 {
+    color: #202b50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-box input,
+.form-box select {
+    width: 100%;
+    padding: 13px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+
+.form-box .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* SEARCH */
+.search {
+    max-width: 500px;
+    width: 100%;
+    display: block;
+    margin: 0 auto 30px;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+}
+
+/* TABLE */
+.table-box {
+    overflow-x: auto;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th, td {
+    padding: 13px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #202b50;
+    color: white;
+}
+
+.return-btn {
+    background: #159b70;
+    color: white;
+    padding: 8px 13px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* MESSAGE */
+#message {
+    display: none;
+    background: #e0f6e9;
+    color: #167143;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 8px;
+}
+
+/* FOOTER */
+footer {
+    background: #202b50;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px) {
+    .home h1 {
+        font-size: 30px;
+    }
+
+    nav {
+        justify-content: center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <h2>📚 Digital Library</h2>
+
+    <div>
+        <a href="#home">Home</a>
+        <a href="#books">Books</a>
+        <a href="#issue">Issue Book</a>
+        <a href="#records">Records</a>
+    </div>
+</nav>
+
+<!-- HOME -->
+<div class="home" id="home">
+    <div>
+        <h1>Welcome to Digital Library</h1>
+        <p>Discover, Read and Explore Your Favourite Books</p>
+        <a href="#books">
+            <button class="btn">Explore Books</button>
+        </a>
+    </div>
+</div>
+
+<!-- BOOKS -->
+<section id="books">
+
+    <h2 class="heading">📖 Available Books</h2>
+
+    <input type="text" id="search"
+    class="search"
+    placeholder="Search books by name or author..."
+    oninput="searchBooks()">
+
+    <div class="books" id="bookList">
+
+        <div class="card">
+            <img src="https://s3-eu-west-1.amazonaws.com/cover2.galileo-press.de/print/9781493225835_800.png">
+            <h3>JavaScript Basics</h3>
+            <p>Author: John Smith</p>
+        </div>
+
+        <div class="card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQPsp0uU03SM30XcfekJESQnzpWUDTMNGC8OqGrey0qA&s=10">
+            <h3>HTML and CSS</h3>
+            <p>Author: David Brown</p>
+        </div>
+
+        <div class="card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJsqR3KDPsGOhhjM2jQbZX_Qm_xSMcElyF79V0vvFXIw&s=10">
+            <h3>Python Programming</h3>
+            <p>Author: James</p>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=500">
+            <h3>Web Development</h3>
+            <p>Author: Robert</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ISSUE BOOK -->
+<section id="issue" style="background:#e8eafb;">
+
+    <h2 class="heading">📕 Issue / Return Book</h2>
+
+    <div class="form-box">
+
+        <h3>Student Details</h3>
+
+        <form id="issueForm">
+
+            <input type="text" id="student"
+            placeholder="Student Name" required>
+
+            <input type="email" id="email"
+            placeholder="Student Email" required>
+
+            <input type="tel" id="phone"
+            placeholder="Phone Number"
+            pattern="[0-9]{10}" required>
+
+            <select id="book" required>
+                <option value="">Select Book</option>
+                <option>JavaScript Basics</option>
+                <option>HTML and CSS</option>
+                <option>Python Programming</option>
+                <option>Web Development</option>
+            </select>
+
+            <label>Issue Date</label>
+            <input type="date" id="issueDate" required>
+
+            <button class="btn" type="submit">
+                Issue Book
+            </button>
+
+        </form>
+
+        <div id="message"></div>
+
+    </div>
+
+</section>
+
+<!-- RECORDS -->
+<section id="records">
+
+    <h2 class="heading">📋 Book Issue Records</h2>
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Email</th>
+                    <th>Book</th>
+                    <th>Issue Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="recordsBody"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <h3>Digital Library Management</h3>
+    <p>Read More, Learn More, Grow More.</p>
+    <p>© 2026 Digital Library</p>
+</footer>
+
+<script>
+
+// BOOK SEARCH
+function searchBooks() {
+const API_KEY = "";
+
+async function searchBooks() {
+
+    let book = document.getElementById("search").value;
+
+    let url = `https://www.googleapis.com/books/v1/volumes?q=${book}&key=${API_KEY}`;
+
+    let response = await fetch(url);
+
+    let data = await response.json();
+
+    console.log(data);
+}
+
+
+    let input = document.getElementById("search").value.toLowerCase();
+
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(function(card) {
+
+        let text = card.innerText.toLowerCase();
+
+        if(text.includes(input)) {
+            card.style.display = "block";
+        }
+
+        else {
+            card.style.display = "none";
+        }
+
+    });
+
+}
+
+// LOAD RECORDS
+function loadRecords() {
+
+    let records = JSON.parse(localStorage.getItem("libraryRecords")) || [];
+
+    let body = document.getElementById("recordsBody");
+
+    body.innerHTML = "";
+
+    records.forEach(function(record,index) {
+
+        let row = document.createElement("tr");
+
+        let values = [
+            record.student,
+            record.email,
+            record.book,
+            record.date,
+            record.status
+        ];
+
+        values.forEach(function(value) {
+            let cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+
+        let actionCell = document.createElement("td");
+
+        if(record.status === "Issued") {
+
+            let button = document.createElement("button");
+
+            button.innerText = "Return";
+            button.className = "return-btn";
+
+            button.onclick = function() {
+                returnBook(index);
+            };
+
+            actionCell.appendChild(button);
+
+        } else {
+
+            actionCell.textContent = "Returned";
+
+        }
+
+        row.appendChild(actionCell);
+
+        body.appendChild(row);
+
+    });
+
+}
+
+// ISSUE BOOK
+document.getElementById("issueForm").addEventListener("submit",function(e) {
+
+    e.preventDefault();
+
+    let records = JSON.parse(localStorage.getItem("libraryRecords")) || [];
+
+    let book = document.getElementById("book").value;
+
+    let alreadyIssued = records.some(function(record) {
+        return record.book === book && record.status === "Issued";
+    });
+
+    if(alreadyIssued) {
+        showMessage("This book is already issued!");
+        return;
+    }
+
+    let record = {
+
+        student: document.getElementById("student").value,
+
+        email: document.getElementById("email").value,
+
+        phone: document.getElementById("phone").value,
+
+        book: book,
+
+        date: document.getElementById("issueDate").value,
+
+        status: "Issued"
+
+    };
+
+    records.push(record);
+
+    localStorage.setItem("libraryRecords",JSON.stringify(records));
+
+    showMessage("Book issued successfully!");
+
+    document.getElementById("issueForm").reset();
+
+    loadRecords();
+
+});
+
+// RETURN BOOK
+function returnBook(index) {
+
+    let records = JSON.parse(localStorage.getItem("libraryRecords")) || [];
+
+    let issueDate = new Date(records[index].date);
+
+    let returnDate = new Date();
+
+    issueDate.setHours(0,0,0,0);
+    returnDate.setHours(0,0,0,0);
+
+    let days = Math.floor(
+        (returnDate - issueDate) / (1000*60*60*24)
+    );
+
+    let lateDays = Math.max(0,days - 14);
+
+    let fine = lateDays * 5;
+
+    records[index].status = "Returned";
+
+    records[index].fine = fine;
+
+    localStorage.setItem("libraryRecords",JSON.stringify(records));
+
+    alert(
+        "Book Returned Successfully!\n" +
+        "Late Days: " + lateDays + "\n" +
+        "Fine Amount: ₹" + fine
+    );
+
+    loadRecords();
+
+}
+
+// MESSAGE
+function showMessage(text) {
+
+    let message = document.getElementById("message");
+
+    message.innerText = text;
+
+    message.style.display = "block";
+
+}
+
+// SET TODAY
+document.getElementById("issueDate").value =
+new Date().toISOString().split("T")[0];
+
+// DISPLAY RECORDS
+loadRecords();
+
+</script>
+
+</body>
+</html>
